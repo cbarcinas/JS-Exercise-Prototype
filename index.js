@@ -67,7 +67,26 @@ Person.prototype.toString = function () {
           + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
   */
 
-function Car() {}
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
+}
+Car.prototype.fill = function (gallons) {
+  this.tank += gallons;
+};
+Car.prototype.drive = function (distance) {
+  if (this.tank > 0) {
+    for (let i = 0; i < distance; i++) {
+      this.tank -= 1 / this.milesPerGallon;
+      this.odometer += 1;
+      if (this.tank <= 0) {
+        return `I ran out of fuel at ${this.odometer} miles!`;
+      }
+    }
+  }
+};
 
 /*
     TASK 3
@@ -76,15 +95,22 @@ function Car() {}
       - Besides the methods on Person.prototype, babies have the ability to `.play()`:
           + Should return a string "Playing with x", x being the favorite toy.
   */
-function Baby() {}
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age);
+  this.favoriteToy = favoriteToy;
+}
+Baby.prototype = Object.create(Person.prototype);
+Baby.prototype.play = function () {
+  return `Playing with ${this.favoriteToy}`;
+};
 
 /* 
     TASK 4
     In your own words explain the four principles for the "this" keyword below:
-    1. 
-    2. 
-    3. 
-    4. 
+    1. Global - when a function is contained in the global scope, value of this in that function will be the window object.
+    2. Implicit - when you use this inside an object , this is referring to the parent object. we look to the left of the dot and that is what this is 
+    3. Explicit - using explicit binding, you are able to choose what this is referring to by call,Apply & bind to invoke the function.
+    4. New - using the new keyword will create a new object and that is what this is referring to.
   */
 
 ///////// END OF CHALLENGE /////////
